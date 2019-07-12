@@ -35,6 +35,7 @@ namespace Repository.Repositories
 
             hospitalOriginal.RazaoSocial = hospital.RazaoSocial;
             hospitalOriginal.Particular = hospital.Particular;
+            hospitalOriginal.Cnpj = hospital.Cnpj;
             hospitalOriginal.Faturamento = hospital.Faturamento;
             context.SaveChanges();
             return true;
@@ -73,8 +74,9 @@ namespace Repository.Repositories
         {
             return (from hospital in context.Hospitais
                     where 
-                        hospital.RazaoSocial.Contains(busca) || 
-                        hospital.Cnpj.Contains(busca)
+                        hospital.RegistroAtivo == true &&
+                        (hospital.RazaoSocial.Contains(busca) || 
+                        hospital.Cnpj.Contains(busca))
                     orderby hospital.RazaoSocial
                     select hospital
                     ).ToList();
